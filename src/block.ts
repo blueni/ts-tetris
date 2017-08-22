@@ -29,15 +29,17 @@ export default class Block{
         this.coors = this.getCoordinate()
     }
 
-    getCoordinate( coordinate?: ( number | number[])[] ): number[][]{
+    getCoordinate( coordinate?: ( number | number[])[], position?: number[] ): number[][]{
         let elems = this.elements
         let coors: number[][] = []
-        let position = this.position
+        let nums: number[]
 
+        if( !position ){
+            position = this.position
+        }
         if( !coordinate ){
             coordinate = this.shape.coordinate
         }
-        let nums: number[]
         for( let i=0;i<coordinate.length;i++ ){
             nums = <number[]>(Array.isArray( coordinate[i] ) ? coordinate[i] : [ coordinate[i] ])
             for( let j=0;j<nums.length;j++ ){
@@ -50,14 +52,17 @@ export default class Block{
     }
 
     blockOperate( direction: DIRECTION ): number[][]{
+        let coors = this.coors
         if( direction == DIRECTION.UP ){
+            let initCoors = this.getCoordinate( this.shape.coordinate, [ 0, 0 ] )
+            let position = [ coors[0][0] - initCoors[0][0], coors[0][1] - initCoors[0][1] ]
+            console.log( 'position...', position )
             let shape = createShape( this.shape )
             shape.rotate()
-            return this.getCoordinate( shape.coordinate )
+            return this.getCoordinate( shape.coordinate, position )
         }
         let _coors: number[][] = []
         let _coor: number[] = []
-        let coors = this.coors
         for( let coor of coors ){
             _coor = coor.slice()
             if( direction == DIRECTION.LEFT ){

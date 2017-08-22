@@ -18,11 +18,12 @@ export class Shape{
         this.shapeIndex = index
     }
 
-    clone(): Shape{
-        let shape = new Shape
-        shape.shapeIndex = this.shapeIndex
-        shape.coordinate = shape.allShapes[shape.shapeIndex]
-        return shape
+    clone( shape: Shape ): Shape{
+        let _shape = new Shape
+        _shape.allShapes = shape.allShapes
+        _shape.shapeIndex = shape.shapeIndex
+        _shape.coordinate = _shape.allShapes[_shape.shapeIndex]
+        return _shape
     }
 
 }

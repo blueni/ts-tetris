@@ -73,9 +73,9 @@ export default class Tetris{
                     coors = block.blockOperate( DIRECTION.LEFT )
                     break
 
-                // case 38:    // rotate
-                //     coors = block.blockOperate( DIRECTION.UP )
-                //     break
+                case 38:    // rotate
+                    coors = block.blockOperate( DIRECTION.UP )
+                    break
                     
                 case 39:    // right
                     coors = block.blockOperate( DIRECTION.RIGHT )
