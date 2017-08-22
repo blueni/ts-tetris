@@ -1,5 +1,3 @@
-import DIRECTION from './direction'
-
 export default class Scene{
 
     lines: number = 20
@@ -15,7 +13,7 @@ export default class Scene{
         if( columns > 10 ){
             this.columns = columns
         }
-        this.clear()
+        this.init()
     }
 
     isLineFulled( line: number ): boolean{
@@ -45,49 +43,32 @@ export default class Scene{
         return false
     }
 
-    putBlock( coors: number[][] ): void{        
+    putCoor( coors: number[][] ): void{        
         if( this.hitCheck( coors ) ){
-            throw new Error( 'block can not put there' )
+            throw new Error( 'block can not put here' )
         }
         for( let coor of coors ){
             this.coors[coor[0]][coor[1]] = 1
         }
     }
 
-    logicPutBlock( coors: number[][] ): void{
-        let prevLine: number = -1
-        let coorsEnd = coors[coors.length - 1][1]
-        coorsEnd = this.lines - coorsEnd
-        for( let line = 0;line < coorsEnd;line++ ){            
-            if( this.hitCheck( coors ) ){
-                break
-            }
-            coors = this.coorOperate( coors, DIRECTION.DOWN )
-            prevLine = line
-        }
-        if( prevLine > -1 ){
-            this.putBlock( coors )
-        }
-    }
+    // logicPutBlock( coors: number[][] ): void{
+    //     let prevLine: number = -1
+    //     let coorsEnd = coors[coors.length - 1][1]
+    //     coorsEnd = this.lines - coorsEnd
+    //     for( let line = 0;line < coorsEnd;line++ ){            
+    //         if( this.hitCheck( coors ) ){
+    //             break
+    //         }
+    //         coors = this.coorOperate( coors, DIRECTION.DOWN )
+    //         prevLine = line
+    //     }
+    //     if( prevLine > -1 ){
+    //         this.putBlock( coors )
+    //     }
+    // }
 
-    coorOperate( coors: number[][], direction: DIRECTION ): number[][]{
-        let _coors: number[][] = []
-        let _coor: number[] = []
-        for( let coor of coors ){
-            _coor = coor.slice()
-            if( direction == DIRECTION.LEFT ){
-                _coor[0] -= 1
-            }else if( direction == DIRECTION.RIGHT ){
-                _coor[0] += 1
-            }else if( direction == DIRECTION.DOWN ){
-                _coor[1] += 1
-            }
-            _coors.push( _coor )
-        }
-        return _coors
-    }
-
-    clear(): void{
+    init(): void{
         this.coors = []
         let coors: number[]
         for( let i = 0;i<this.lines;i++ ){
@@ -99,7 +80,13 @@ export default class Scene{
         }
     }
 
-    clearLine( line: number ): boolean{
+    clear(): void{
+        for( let i = 0;i<this.lines;i++ ){
+            this.clearLine( i )
+        }
+    }
+
+    clearLine( line: number ): void{
         let coors = this.coors[line]
         if( !coors ){
             throw new Error( 'line is out of coordinates' )
@@ -107,7 +94,6 @@ export default class Scene{
         coors = coors.map( ( flag: number ) => 0 )
         this.coors.splice( line, 1 )
         this.coors.unshift( coors )
-        return true
     }
 
 }

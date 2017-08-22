@@ -1,7 +1,5 @@
 export class Shape{
 
-    direction: number = 0                   // 方向
-
     coordinate: ( number[] | number )[]     // 形状坐标
 
     shapeIndex: number = 0
@@ -18,6 +16,13 @@ export class Shape{
         index = index % this.allShapes.length
         this.coordinate = this.allShapes[index]
         this.shapeIndex = index
+    }
+
+    clone(): Shape{
+        let shape = new Shape
+        shape.shapeIndex = this.shapeIndex
+        shape.coordinate = shape.allShapes[shape.shapeIndex]
+        return shape
     }
 
 }

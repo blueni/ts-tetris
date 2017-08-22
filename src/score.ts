@@ -14,8 +14,11 @@ export default class Score{
             score += i
         }
         score = score * this.baseScore
-        this.count += score
         return score
+    }
+
+    setCount( score: number ): void{
+        this.count += score
     }
 
 }

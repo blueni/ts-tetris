@@ -1,5 +1,5 @@
 const enum DIRECTION{
-    LEFT, RIGHT, DOWN
+    LEFT, RIGHT, DOWN, UP
 }
 
 export default DIRECTION

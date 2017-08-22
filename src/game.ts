@@ -1,4 +1,4 @@
-import Scene from './scene'
+import SceneRender from './scene-render'
 import { 
     Shape,
     createShape
@@ -13,7 +13,7 @@ export default class Tetris{
 
     box: HTMLElement
 
-    scene: Scene
+    scene: SceneRender
 
     currentBlock: Block
 
@@ -23,66 +23,84 @@ export default class Tetris{
 
     timer: number
 
-    level: number = 4
+    level: number = 6
 
     startGame(): void {
         let blockSize = this.blockSize
         let box = this.box = <HTMLElement>$( '#tetris' )
-        let scene = this.scene = new Scene( 20, 10 )
+        let scene = this.scene = new SceneRender( 20, 10 )
         box.style.width = blockSize * scene.columns + 'px'
         box.style.height = blockSize * scene.lines + 'px'
         box.style.overflow = 'hidden'
         this.createBlock()
         this.falldown()
-    }
-
-    move(){
-        
+        this.keyBinding()
     }
 
     falldown(){
         let speed = this.getSpeed()
         let block = this.currentBlock
         let scene = this.scene
-        let prevCoors: number[][]
-        let coors = block.getCoordinate()
+        let coors: number[][]
+        let nextCoors: number[][]
         clearInterval( this.timer )
         this.timer = setInterval( () => {
-            if( scene.hitCheck( coors ) ){
+            nextCoors = block.blockOperate( DIRECTION.DOWN )
+            if( scene.hitCheck( nextCoors ) ){
                 clearInterval( this.timer )
-                if( !prevCoors ){
+                if( !coors ){
                     console.log( 'game is over...' )
                     return 
                 }
-                scene.putBlock( prevCoors )
+                scene.putBlock( block )
                 this.createBlock()
                 this.falldown()
                 return
             }else{
-                prevCoors = coors
-                this.setBlockPosition( prevCoors )
-                coors = scene.coorOperate( coors, DIRECTION.DOWN )
+                coors = nextCoors
+                block.coors = coors
+                this.setBlockPosition( coors )
             }
         }, speed )
     }
+    
+    keyBinding(): void{
+        document.addEventListener( 'keydown', ( event ) => {
+            let block = this.currentBlock
+            let coors: number[][]
+            switch( event.keyCode ){                                
+                case 37:    // left
+                    coors = block.blockOperate( DIRECTION.LEFT )
+                    break
 
-    getSpeed(): number{
-        return [ 200, 180, 160, 140, 80 ][this.level]
-    }
+                // case 38:    // rotate
+                //     coors = block.blockOperate( DIRECTION.UP )
+                //     break
+                    
+                case 39:    // right
+                    coors = block.blockOperate( DIRECTION.RIGHT )
+                    break
+                    
+                case 40:    // down
+                    coors = block.blockOperate( DIRECTION.DOWN )
+                    break
 
-    getAbsolutePosition( position: number[] ): number[][]{
-        let blockSize = this.blockSize
-        let block = this.currentBlock
-        return block.getCoordinate( position ).map( ( coor: number[] ) => {
-            return <number[]>[ coor[0] * blockSize, coor[1] * blockSize ]
+                default:
+                    return
+            }
+            if( !this.scene.hitCheck( coors ) ){
+                block.coors = coors
+                this.setBlockPosition( coors )
+            }
         })
     }
 
-    setBlockPosition( coors?: number[][] ): boolean{
+    getSpeed(): number{
+        return [ 200, 180, 160, 140, 120, 100, 80 ][this.level]
+    }
+
+    setBlockPosition( coors: number[][] ): boolean{
         let block = this.currentBlock
-        if( !coors ){
-            coors = this.getAbsolutePosition( block.position )
-        }
         let elems = block.elements
         let blockSize = this.blockSize
         coors.forEach( ( coor: [number, number ], index: number ) => {
@@ -95,17 +113,20 @@ export default class Tetris{
     createBlock() :void{
         let blockSize = this.blockSize
         let box = this.box
+        let random = Math.floor( Math.random() * 5 )
 
         const _createBlock = (): Block => {
             return new Block( Math.floor( Math.random() * 7 ), [ Math.floor( this.scene.columns / 2 ) - 2, -4 ] )
         }  
 
         let nextBlock: Block = _createBlock()
+        nextBlock.shape.rotate( random )
         let currentBlock
         if( this.nextBlock ){
             this.currentBlock = this.nextBlock
         }else{
             this.currentBlock = _createBlock()
+            this.currentBlock.shape.rotate( random )            
         }
         this.nextBlock = nextBlock
         currentBlock = this.currentBlock
