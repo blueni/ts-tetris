@@ -1,0 +1,9 @@
+{
+    "files": [
+        "src/game.ts"
+    ],
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "target": "es6"
+    }
+}

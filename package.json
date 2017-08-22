@@ -1,0 +1,18 @@
+{
+  "name": "tetris",
+  "version": "1.0.0",
+  "description": "the tetrit game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "blueni",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^14.4.0",
+    "gulp": "^3.9.1",
+    "tsify": "^3.0.1",
+    "vinyl-source-stream": "^1.1.0",
+    "typescript": "^2.4.2"
+  }
+}
