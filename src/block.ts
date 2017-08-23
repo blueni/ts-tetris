@@ -54,9 +54,9 @@ export default class Block{
     blockOperate( direction: DIRECTION ): number[][]{
         let coors = this.coors
         if( direction == DIRECTION.UP ){
-            let initCoors = this.getCoordinate( this.shape.coordinate, [ 0, 0 ] )
-            let position = [ coors[0][0] - initCoors[0][0], coors[0][1] - initCoors[0][1] ]
-            console.log( 'position...', position )
+            let initCoor = this.getCoordinate( this.shape.coordinate, [ 0, 0 ] )[0]
+            let currentCoor = coors[0]
+            let position = [ currentCoor[0] - initCoor[0], currentCoor[1] - initCoor[1] ]
             let shape = createShape( this.shape )
             shape.rotate()
             return this.getCoordinate( shape.coordinate, position )
@@ -75,11 +75,6 @@ export default class Block{
             _coors.push( _coor )
         }
         return _coors
-    }
-
-    rotate( num?: number ): void{
-        this.shape.rotate( num )
-        this.coors = this.getCoordinate()
     }
 
     destroy(): void{

@@ -19,7 +19,7 @@ export default class SceneRender extends Scene{
         let elems: HTMLElement[]
         let coors = block.coors
         block.coors.forEach( ( coor, index ) => {
-            let line = coor[0]
+            let line = coor[1]
             if( !elements[line] ){
                 elements[line] = []
             }
@@ -43,7 +43,7 @@ export default class SceneRender extends Scene{
                 break
             }
             elements[i].forEach( elem => {
-                elem.style.top = line * config.blockSize + 'px'
+                elem.style.top = ( i + 1 ) * config.blockSize + 'px'
             })
             elements[i+1] = elements[i]
             elements[i] = null

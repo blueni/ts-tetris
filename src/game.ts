@@ -23,7 +23,7 @@ export default class Tetris{
 
     timer: number
 
-    level: number = 6
+    level: number = 0
 
     startGame(): void {
         let blockSize = this.blockSize
@@ -91,6 +91,10 @@ export default class Tetris{
             if( !this.scene.hitCheck( coors ) ){
                 block.coors = coors
                 this.setBlockPosition( coors )
+
+                if( event.keyCode == 38 ){
+                    block.shape.rotate();
+                }
             }
         })
     }

@@ -17,12 +17,12 @@ export default class Scene{
     }
 
     isLineFulled( line: number ): boolean{
-        let coors = this.coors[line]
-        if( !coors ){
+        let flags = this.coors[line]
+        if( !flags ){
             throw new Error( 'line is out of coordinates' )
         }
-        for( let flag of coors ){
-            if( !!flag ){
+        for( let flag of flags ){
+            if( !flag ){
                 return false
             }
         }
@@ -36,7 +36,7 @@ export default class Scene{
                 return true
             }
             // 此坑已被占~
-            if( this.coors[coor[0]][coor[1]] ){
+            if( coor[1] >= 0 && this.coors[coor[1]][coor[0]] ){
                 return true
             }
         }
@@ -48,7 +48,7 @@ export default class Scene{
             throw new Error( 'block can not put here' )
         }
         for( let coor of coors ){
-            this.coors[coor[0]][coor[1]] = 1
+            this.coors[coor[1]][coor[0]] = 1
         }
     }
 
