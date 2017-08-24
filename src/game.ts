@@ -29,8 +29,7 @@ export default class Tetris{
         box.style.width = blockSize * config.columns + 'px'
         box.style.height = blockSize * config.lines + 'px'
         box.style.overflow = 'hidden'
-        this.createBlock()
-        this.falldown()
+        this.next()
         this.keyBinding()
     }
 
@@ -49,6 +48,7 @@ export default class Tetris{
                     console.log( 'game is over...' )
                     return 
                 }
+                this.scene.putBlock( block )
                 this.next()
                 return
             }else{
@@ -60,7 +60,6 @@ export default class Tetris{
     }
 
     next(): void{
-        this.scene.putBlock( this.currentBlock )
         this.createBlock()
         this.falldown()
     }
@@ -95,6 +94,7 @@ export default class Tetris{
                     }
                     if( coors ){
                         this.setBlockPosition( coors )
+                        this.scene.putBlock( block )
                         this.next()
                         return
                     }
@@ -107,15 +107,15 @@ export default class Tetris{
                 block.coors = coors
                 this.setBlockPosition( coors )
 
-                if( event.keyCode == 38 ){
-                    block.shape.rotate();
+                if( event.keyCode == KEYCODE.UP ){
+                    block.shape.rotate()
                 }
             }
         })
     }
 
     getSpeed(): number{
-        return [ 200, 180, 160, 140, 120, 100, 80 ][this.level]
+        return [ 800, 180, 160, 140, 120, 100, 80 ][this.level]
     }
 
     setBlockPosition( coors: number[][] ): boolean{

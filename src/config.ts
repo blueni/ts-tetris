@@ -6,5 +6,4 @@ export default {
 
     columns: 10,
 
-
 }

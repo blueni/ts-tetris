@@ -30,6 +30,9 @@ export default class Scene{
     }
 
     hitCheck( coors: number[][] ): boolean{
+        if( !coors ){
+            return false
+        }
         for( let coor of coors ){
             // 撞墙了~
             if( coor[0] < 0 || coor[0] > this.columns - 1 || coor[1] > this.lines - 1 ){
@@ -51,22 +54,6 @@ export default class Scene{
             this.coors[coor[1]][coor[0]] = 1
         }
     }
-
-    // logicPutBlock( coors: number[][] ): void{
-    //     let prevLine: number = -1
-    //     let coorsEnd = coors[coors.length - 1][1]
-    //     coorsEnd = this.lines - coorsEnd
-    //     for( let line = 0;line < coorsEnd;line++ ){            
-    //         if( this.hitCheck( coors ) ){
-    //             break
-    //         }
-    //         coors = this.coorOperate( coors, DIRECTION.DOWN )
-    //         prevLine = line
-    //     }
-    //     if( prevLine > -1 ){
-    //         this.putBlock( coors )
-    //     }
-    // }
 
     init(): void{
         this.coors = []

@@ -83,18 +83,5 @@ export default class Block{
         this.coors = null
         this.position = null
     }
-
-    [Symbol.iterator](): Iterator<Element>{
-        let index = 0
-        let elements = this.elements
-        return {
-            next(){
-                let elem = elements[index++]
-                return {
-                    value: elem,
-                    done: !!elem
-                }
-            }
-        }
-    }
+    
 }

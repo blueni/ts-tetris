@@ -11,7 +11,7 @@ export default class SceneRender extends Scene{
     elements: Elements
 
     putBlock( block: Block ): void{
-        super.putCoor( block.coors )
+        this.putCoor( block.coors )
         if( !this.elements ){
             this.elements = {}
         }
@@ -28,6 +28,24 @@ export default class SceneRender extends Scene{
                 this.clearLine( line )
             }
         })
+    }
+
+    putCoor( coors: number[][] ): void{
+        super.putCoor( coors )
+        let flags: number[]
+        let _coors
+        for( let i=0;i<this.coors.length;i++ ){
+            _coors = this.coors[i]
+            flags = []
+            for( let flag of _coors ){
+                flags.push( flag ? 1 : 0 )
+            }
+            if( !/1/.test( flags.join() ) ){
+                continue
+            }
+            console.log( 'line', ( '0' + i ).slice( -2 ), ':', flags.join( ' - ' ) )
+        }
+        console.log( '------------------------\n' )
     }
 
     clearLine( line: number ): void{
