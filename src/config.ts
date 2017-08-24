@@ -4,6 +4,7 @@ export default {
 
     lines: 20,
 
-    columns: 10,    
+    columns: 10,
+
 
 }

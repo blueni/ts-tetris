@@ -1,10 +1,6 @@
 import config from './config'
 import KEYCODE from './keycode'
 import SceneRender from './scene-render'
-import { 
-    Shape,
-    createShape
-} from './shapes/index'
 import Block from './block'
 import Score from './score'
 import DIRECTION from './direction'
@@ -30,8 +26,8 @@ export default class Tetris{
         let blockSize = config.blockSize
         let box = this.box = <HTMLElement>$( '#tetris' )
         let scene = this.scene = new SceneRender( config.lines, config.columns )
-        box.style.width = blockSize * scene.columns + 'px'
-        box.style.height = blockSize * scene.lines + 'px'
+        box.style.width = blockSize * config.columns + 'px'
+        box.style.height = blockSize * config.lines + 'px'
         box.style.overflow = 'hidden'
         this.createBlock()
         this.falldown()
@@ -53,9 +49,7 @@ export default class Tetris{
                     console.log( 'game is over...' )
                     return 
                 }
-                scene.putBlock( block )
-                this.createBlock()
-                this.falldown()
+                this.next()
                 return
             }else{
                 coors = nextCoors
@@ -63,6 +57,12 @@ export default class Tetris{
                 this.setBlockPosition( coors )
             }
         }, speed )
+    }
+
+    next(): void{
+        this.scene.putBlock( this.currentBlock )
+        this.createBlock()
+        this.falldown()
     }
     
     keyBinding(): void{
@@ -92,6 +92,11 @@ export default class Tetris{
                         coors = _coors
                         block.coors = coors
                         _coors = block.blockOperate( DIRECTION.DOWN )
+                    }
+                    if( coors ){
+                        this.setBlockPosition( coors )
+                        this.next()
+                        return
                     }
                     break
 
