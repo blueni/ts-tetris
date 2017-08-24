@@ -2,8 +2,8 @@ export default {
 
     blockSize: 15,
 
-    sceneSize: [ 20, 10 ],
+    lines: 20,
 
-    
+    columns: 10,    
 
 }

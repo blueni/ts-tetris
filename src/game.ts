@@ -1,3 +1,5 @@
+import config from './config'
+import KEYCODE from './keycode'
 import SceneRender from './scene-render'
 import { 
     Shape,
@@ -19,16 +21,15 @@ export default class Tetris{
 
     nextBlock: Block
 
-    blockSize: number = 15
-
     timer: number
 
     level: number = 0
 
     startGame(): void {
-        let blockSize = this.blockSize
+        document.body.focus()
+        let blockSize = config.blockSize
         let box = this.box = <HTMLElement>$( '#tetris' )
-        let scene = this.scene = new SceneRender( 20, 10 )
+        let scene = this.scene = new SceneRender( config.lines, config.columns )
         box.style.width = blockSize * scene.columns + 'px'
         box.style.height = blockSize * scene.lines + 'px'
         box.style.overflow = 'hidden'
@@ -69,20 +70,29 @@ export default class Tetris{
             let block = this.currentBlock
             let coors: number[][]
             switch( event.keyCode ){                                
-                case 37:    // left
+                case KEYCODE.LEFT:    // left
                     coors = block.blockOperate( DIRECTION.LEFT )
                     break
 
-                case 38:    // rotate
+                case KEYCODE.UP:    // rotate
                     coors = block.blockOperate( DIRECTION.UP )
                     break
                     
-                case 39:    // right
+                case KEYCODE.RIGHT:    // right
                     coors = block.blockOperate( DIRECTION.RIGHT )
                     break
                     
-                case 40:    // down
+                case KEYCODE.DOWN:    // down
                     coors = block.blockOperate( DIRECTION.DOWN )
+                    break
+
+                case KEYCODE.SPACE:    // space
+                    let _coors = block.blockOperate( DIRECTION.DOWN )
+                    while( !this.scene.hitCheck( _coors ) ){
+                        coors = _coors
+                        block.coors = coors
+                        _coors = block.blockOperate( DIRECTION.DOWN )
+                    }
                     break
 
                 default:
@@ -106,7 +116,7 @@ export default class Tetris{
     setBlockPosition( coors: number[][] ): boolean{
         let block = this.currentBlock
         let elems = block.elements
-        let blockSize = this.blockSize
+        let blockSize = config.blockSize
         coors.forEach( ( coor: [number, number ], index: number ) => {
             elems[index].style.left = coor[0] * blockSize + 'px'
             elems[index].style.top = coor[1] * blockSize + 'px'
@@ -115,7 +125,7 @@ export default class Tetris{
     }
 
     createBlock() :void{
-        let blockSize = this.blockSize
+        let blockSize = config.blockSize
         let box = this.box
         let random = Math.floor( Math.random() * 5 )
 
