@@ -1,6 +1,6 @@
 export default {
 
-    blockSize: 15,
+    blockSize: 25,
 
     lines: 20,
 

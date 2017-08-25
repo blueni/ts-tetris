@@ -13,12 +13,12 @@ const enum SHAPE_TYPES {
     S, Z, L, J, T, O, I
 }
 
-const createShape = ( type: SHAPE_TYPES | Shape ): Shape => {
-    let shape: Shape
+const createShape = <T extends Shape>( type: SHAPE_TYPES | T ): T => {
     if( type instanceof Shape ){
-        return (<Shape>type).clone( type )
+        return <T>type.clone( type )
     }
-    shape = new [ S, Z, L, J, T, O, I ][ type ]
+    let shape: T
+    shape = <T>new [ S, Z, L, J, T, O, I ][ type ]
     shape.coordinate = shape.allShapes[0]
     shape.shapeIndex = 0
     return shape

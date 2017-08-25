@@ -15,18 +15,36 @@ export default class Block{
 
     coors: number[][]
 
+    private static index: number = 0
+
     constructor( type: Shape | SHAPE_TYPES, position?: number[] ){
         let elm: HTMLElement
         this.shape = createShape( type )
         this.elements = []
+        Block.index++
         for( let i=0;i<4;i++ ){
             let div = document.createElement( 'div' )            
+            div.className = `${Block.index}::block-${this.shape.name}-${i+1}`
             this.elements.push( div )
         }
         if( position ){
             this.position = position
         }
         this.coors = this.getCoordinate()
+    }
+
+    getHorizontalBlocks(): number{
+        let coor = this.shape.coordinate
+        return <number>coor.reduce( ( prev, item ) => {
+            Array.isArray( item )
+            let res = Array.isArray( item ) ? item.length : 1
+            return res > prev ? res : prev
+        }, 1 )
+    }
+
+    getVerticalBlocks(): number{
+        let coor = this.shape.coordinate
+        return coor.length
     }
 
     getCoordinate( coordinate?: ( number | number[])[], position?: number[] ): number[][]{
@@ -49,6 +67,20 @@ export default class Block{
             }
         }
         return coors
+    }
+
+    operate( direction: DIRECTION ): void {
+        if( direction == DIRECTION.UP ){
+            this.shape.rotate()
+            this.coors = this.getCoordinate()
+            return
+        }
+        this.coors = this.blockOperate( direction )
+    }
+
+    rotate( n?: number ): void{
+         this.shape.rotate( n )
+         this.coors = this.getCoordinate()
     }
 
     blockOperate( direction: DIRECTION ): number[][]{

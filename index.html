@@ -7,7 +7,9 @@
     .game{ border: 1px solid #ccc; padding-right: 100px; position: absolute; left: 50%; top: 50%; transform: translate( -50%, -50% ); }
     .tool-box{ width: 100px; height: 100%; border-left: 1px solid #ccc; background: #fdfdfd; position: absolute; right: 0; top: 0; }
     .tetris-box{ position: relative; }
-    .tetris-box > div{ background: #555; box-shadow: 0 0 1px #fff; position: absolute; transition: all .08s;}
+    .tetris-box > div,.preview-box > div{ background: #555; box-shadow: 0 0 1px #fff; position: absolute; transition: all .08s;}
+    .preview-box{ position: relative; }
+    .preview-box > div{ background: #888; }
     </style>
 </head>
 <body>
@@ -15,7 +17,9 @@
     <div class="game">
 
         <div class="tool-box">
-            <div class="next-block"></div>
+            <div id="preview-box" class="preview-box">
+
+            </div>
         </div>
 
         <div id="tetris" class="tetris-box"></div>

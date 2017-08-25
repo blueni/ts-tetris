@@ -11,6 +11,8 @@ export default class Tetris{
 
     box: HTMLElement
 
+    previewBox: HTMLElement
+
     scene: SceneRender
 
     currentBlock: Block
@@ -21,19 +23,28 @@ export default class Tetris{
 
     level: number = 0
 
+    constructor( box: string, preview: string ){
+        this.box = <HTMLElement>$( box )
+        this.previewBox = <HTMLElement>$( preview )
+    }
+
     startGame(): void {
         document.body.focus()
         let blockSize = config.blockSize
-        let box = this.box = <HTMLElement>$( '#tetris' )
         let scene = this.scene = new SceneRender( config.lines, config.columns )
+        let box = this.box
         box.style.width = blockSize * config.columns + 'px'
         box.style.height = blockSize * config.lines + 'px'
         box.style.overflow = 'hidden'
+
+        let previewBox = this.previewBox
+        previewBox.style.margin = blockSize + 'px auto'
+
         this.next()
         this.keyBinding()
     }
 
-    falldown(){
+    falldown(): void{
         let speed = this.getSpeed()
         let block = this.currentBlock
         let scene = this.scene
@@ -115,11 +126,11 @@ export default class Tetris{
     }
 
     getSpeed(): number{
-        return [ 800, 180, 160, 140, 120, 100, 80 ][this.level]
+        return [ 200, 180, 160, 140, 120, 100, 80 ][this.level]
     }
 
-    setBlockPosition( coors: number[][] ): boolean{
-        let block = this.currentBlock
+    setBlockPosition( coors: number[][], block?: Block ): boolean{
+        block = block || this.currentBlock
         let elems = block.elements
         let blockSize = config.blockSize
         coors.forEach( ( coor: [number, number ], index: number ) => {
@@ -129,7 +140,7 @@ export default class Tetris{
         return true
     }
 
-    createBlock() :void{
+    createBlock(): void{
         let blockSize = config.blockSize
         let box = this.box
         let random = Math.floor( Math.random() * 5 )
@@ -139,25 +150,42 @@ export default class Tetris{
         }  
 
         let nextBlock: Block = _createBlock()
-        nextBlock.shape.rotate( random )
-        let currentBlock
+        nextBlock.rotate( random )
+
         if( this.nextBlock ){
             this.currentBlock = this.nextBlock
+            this.nextBlock = nextBlock
         }else{
-            this.currentBlock = _createBlock()
-            this.currentBlock.shape.rotate( random )            
+            this.currentBlock = nextBlock
+            this.nextBlock = _createBlock()
+            this.nextBlock.rotate( random )
         }
-        this.nextBlock = nextBlock
-        currentBlock = this.currentBlock
+        let currentBlock = this.currentBlock
         for( let elem of currentBlock.elements ){
             elem.style.width = blockSize + 'px'
             elem.style.height = blockSize + 'px'
             box.appendChild( elem )
-        }        
+        }
         this.setBlockPosition( currentBlock.getCoordinate() )
+        this.setPreview()
+    }
+
+    setPreview(): void{
+        let nextBlock = this.nextBlock
+        let previewBox = this.previewBox
+        let blockSize = config.blockSize
+        previewBox.innerHTML = ''
+        previewBox.style.width = nextBlock.getHorizontalBlocks() * blockSize + 'px'
+        previewBox.style.height = nextBlock.getVerticalBlocks() * blockSize + 'px'
+        for( let elem of nextBlock.elements ){
+            elem.style.width = blockSize + 'px'
+            elem.style.height = blockSize + 'px'
+            previewBox.appendChild( elem )
+        }
+        this.setBlockPosition( nextBlock.getCoordinate( undefined, [ 0, 0 ] ), nextBlock )
     }
 
 }
 
-let game = new Tetris()
+let game = new Tetris( '#tetris', '#preview-box' )
 game.startGame()

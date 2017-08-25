@@ -24,29 +24,32 @@ export default class SceneRender extends Scene{
                 elements[line] = []
             }
             elements[line].push( block.elements[index] )
-            if( this.isLineFulled( line ) ){
+        })
+        block.coors.forEach( coor => {
+            let line = coor[1]
+            if( this.isLineFulled(  line ) ){
                 this.clearLine( line )
             }
         })
     }
 
-    putCoor( coors: number[][] ): void{
-        super.putCoor( coors )
-        let flags: number[]
-        let _coors
-        for( let i=0;i<this.coors.length;i++ ){
-            _coors = this.coors[i]
-            flags = []
-            for( let flag of _coors ){
-                flags.push( flag ? 1 : 0 )
-            }
-            if( !/1/.test( flags.join() ) ){
-                continue
-            }
-            console.log( 'line', ( '0' + i ).slice( -2 ), ':', flags.join( ' - ' ) )
-        }
-        console.log( '------------------------\n' )
-    }
+    // putCoor( coors: number[][] ): void{
+    //     super.putCoor( coors )
+    //     let flags: number[]
+    //     let _coors
+    //     for( let i=0;i<this.coors.length;i++ ){
+    //         _coors = this.coors[i]
+    //         flags = []
+    //         for( let flag of _coors ){
+    //             flags.push( flag ? 1 : 0 )
+    //         }
+    //         if( !/1/.test( flags.join() ) ){
+    //             continue
+    //         }
+    //         console.log( 'line', ( '0' + i ).slice( -2 ), ':', flags.join( ' - ' ) )
+    //     }
+    //     console.log( '------------------------\n' )
+    // }
 
     clearLine( line: number ): void{
         super.clearLine( line )

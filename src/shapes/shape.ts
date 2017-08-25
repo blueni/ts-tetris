@@ -3,6 +3,8 @@ export class Shape{
     coordinate: ( number[] | number )[]     // 形状坐标
 
     shapeIndex: number = 0
+
+    name: string
     
     allShapes: ( number[] | number )[][]
 
@@ -31,6 +33,8 @@ export class Shape{
 // 形状"S"
 export class S extends Shape{
 
+    name = 's'
+
     allShapes = [
         [ [ 0, 1, 1 ], [ 1, 1 ] ],
         [ 1, [ 1, 1 ], [ 0, 1 ] ]
@@ -39,6 +43,8 @@ export class S extends Shape{
 }
 
 export class L extends Shape{
+
+    name = 'l'
 
     allShapes = [
         [ 1, 1, [ 1, 1 ] ],
@@ -51,6 +57,8 @@ export class L extends Shape{
 
 export class Z extends Shape{
 
+    name = 'z'
+
     allShapes = [
         [ [ 1, 1 ], [ 0, 1, 1 ] ],
         [ [ 0, 1 ], [ 1, 1 ], 1 ]
@@ -59,6 +67,8 @@ export class Z extends Shape{
 }
 
 export class J extends Shape{
+
+    name = 'j'
 
     allShapes = [
         [ [ 0, 1 ], [ 0, 1 ], [ 1, 1 ] ],
@@ -71,6 +81,8 @@ export class J extends Shape{
 
 export class I extends Shape{
 
+    name = 'i'
+
     allShapes = [
         [ [ 0, 1 ], [ 0, 1 ], [ 0, 1 ], [ 0, 1 ] ],
         [ 0, [ 1, 1, 1, 1 ] ]
@@ -80,6 +92,8 @@ export class I extends Shape{
 
 export class O extends Shape{
 
+    name = 'o'
+
     allShapes = [
         [ 0, [ 0, 1, 1 ], [ 0, 1, 1 ] ]
     ]
@@ -87,6 +101,8 @@ export class O extends Shape{
 }
 
 export class T extends Shape{
+
+    name = 't'
 
     allShapes = [
         [ [ 1, 1, 1 ], [ 0, 1 ] ],
